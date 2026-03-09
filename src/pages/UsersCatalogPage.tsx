@@ -1,3 +1,4 @@
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { getUsers, searchUsers } from '../api/users'
 import { Pagination } from '../components/Pagination'
@@ -21,59 +22,29 @@ const initialState: UsersResponse = {
 export function UsersCatalogPage() {
   const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
-  const [data, setData] = useState<UsersResponse>(initialState)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [reloadKey, setReloadKey] = useState(0)
 
   const trimmedQuery = query.trim()
   const debouncedQuery = useDebouncedValue(trimmedQuery, SEARCH_DEBOUNCE_MS)
+  const skip = (page - 1) * PAGE_SIZE
+
+  const { data = initialState, isLoading, isFetching, error, refetch } = useQuery({
+    queryKey: ['users', debouncedQuery, page, PAGE_SIZE],
+    queryFn: ({ signal }) =>
+      debouncedQuery
+        ? searchUsers({ query: debouncedQuery, limit: PAGE_SIZE, skip }, { signal })
+        : getUsers({ limit: PAGE_SIZE, skip }, { signal }),
+    placeholderData: keepPreviousData,
+  })
+
   const totalPages = Math.max(1, Math.ceil(data.total / PAGE_SIZE))
 
   useEffect(() => {
-    const skip = (page - 1) * PAGE_SIZE
-    const controller = new AbortController()
+    const lastPage = Math.max(1, Math.ceil(data.total / data.limit))
 
-    async function loadUsers() {
-      setIsLoading(true)
-      setError(null)
-
-      try {
-        const response = debouncedQuery
-          ? await searchUsers({ query: debouncedQuery, limit: PAGE_SIZE, skip }, { signal: controller.signal })
-          : await getUsers({ limit: PAGE_SIZE, skip }, { signal: controller.signal })
-
-        const lastPage = Math.max(1, Math.ceil(response.total / response.limit))
-
-        if (page > lastPage) {
-          setPage(lastPage)
-          return
-        }
-
-        if (!controller.signal.aborted) {
-          setData(response)
-        }
-      } catch (loadError) {
-        if (loadError instanceof DOMException && loadError.name === 'AbortError') {
-          return
-        }
-
-        if (!controller.signal.aborted) {
-          setError(loadError instanceof Error ? loadError.message : 'Что-то пошло не так.')
-        }
-      } finally {
-        if (!controller.signal.aborted) {
-          setIsLoading(false)
-        }
-      }
+    if (page > lastPage) {
+      setPage(lastPage)
     }
-
-    void loadUsers()
-
-    return () => {
-      controller.abort()
-    }
-  }, [debouncedQuery, page, reloadKey])
+  }, [data.limit, data.total, page])
 
   function handleSearchChange(nextValue: string) {
     setQuery(nextValue)
@@ -81,7 +52,7 @@ export function UsersCatalogPage() {
   }
 
   function handleRetry() {
-    setReloadKey((value) => value + 1)
+    void refetch()
   }
 
   return (
@@ -97,7 +68,7 @@ export function UsersCatalogPage() {
         </div>
 
         <div className={styles.panel}>
-          <SearchInput value={query} isBusy={isLoading} onChange={handleSearchChange} />
+          <SearchInput value={query} isBusy={isLoading || isFetching} onChange={handleSearchChange} />
           <div className={styles.summary}>
             <div>
               <span>Найдено</span>
@@ -121,7 +92,7 @@ export function UsersCatalogPage() {
         {error ? (
           <StatusBlock
             title="Не удалось загрузить каталог"
-            description={error}
+            description={error instanceof Error ? error.message : 'Что-то пошло не так.'}
             actionLabel="Повторить"
             onAction={handleRetry}
           />
