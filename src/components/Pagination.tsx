@@ -6,10 +6,22 @@ type PaginationProps = {
   onPageChange: (page: number) => void
 }
 
-function getVisiblePages(currentPage: number, totalPages: number) {
-  const pages = new Set<number>([1, totalPages, currentPage - 1, currentPage, currentPage + 1])
+type PaginationItem = number | 'ellipsis'
 
-  return [...pages].filter((page) => page >= 1 && page <= totalPages).sort((a, b) => a - b)
+function getVisiblePages(currentPage: number, totalPages: number): PaginationItem[] {
+  if (totalPages <= 5) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1)
+  }
+
+  if (currentPage <= 3) {
+    return [1, 2, 3, 'ellipsis', totalPages]
+  }
+
+  if (currentPage >= totalPages - 2) {
+    return [1, 'ellipsis', totalPages - 2, totalPages - 1, totalPages]
+  }
+
+  return [1, 'ellipsis', currentPage - 1, currentPage, currentPage + 1, 'ellipsis', totalPages]
 }
 
 export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
@@ -27,22 +39,31 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         aria-disabled={currentPage === 1}
+        aria-label="Предыдущая страница"
       >
-        Назад
+        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+          <path d="m14 6-6 6 6 6" />
+        </svg>
       </button>
 
       <div className={styles.pages}>
-        {visiblePages.map((page) => (
-          <button
-            key={page}
-            className={page === currentPage ? styles.pageButtonActive : styles.pageButton}
-            type="button"
-            onClick={() => onPageChange(page)}
-            aria-current={page === currentPage ? 'page' : undefined}
-          >
-            {page}
-          </button>
-        ))}
+        {visiblePages.map((page, index) =>
+          page === 'ellipsis' ? (
+            <span key={`ellipsis-${index}`} className={styles.ellipsis} aria-hidden="true">
+              ...
+            </span>
+          ) : (
+            <button
+              key={page}
+              className={page === currentPage ? styles.pageButtonActive : styles.pageButton}
+              type="button"
+              onClick={() => onPageChange(page)}
+              aria-current={page === currentPage ? 'page' : undefined}
+            >
+              {page}
+            </button>
+          ),
+        )}
       </div>
 
       <button
@@ -51,8 +72,11 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         aria-disabled={currentPage === totalPages}
+        aria-label="Следующая страница"
       >
-        Вперед
+        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+          <path d="m10 6 6 6-6 6" />
+        </svg>
       </button>
     </nav>
   )
