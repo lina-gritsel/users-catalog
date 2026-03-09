@@ -8,7 +8,7 @@ type UsersGridProps = {
   onUserClick: (user: User) => void
 }
 
-export function UsersGrid({ users, viewMode, onUserClick }: UsersGridProps) {
+export const UsersGrid = ({ users, viewMode, onUserClick }: UsersGridProps) => {
   return (
     <section
       className={viewMode === 'list' ? styles.list : styles.grid}

@@ -1,3 +1,5 @@
+import { ChevronLeftIcon } from '../assets/icons/ChevronLeftIcon'
+import { ChevronRightIcon } from '../assets/icons/ChevronRightIcon'
 import styles from './Pagination.module.css'
 
 type PaginationProps = {
@@ -8,7 +10,7 @@ type PaginationProps = {
 
 type PaginationItem = number | 'ellipsis'
 
-function getVisiblePages(currentPage: number, totalPages: number): PaginationItem[] {
+const getVisiblePages = (currentPage: number, totalPages: number): PaginationItem[] => {
   if (totalPages <= 5) {
     return Array.from({ length: totalPages }, (_, index) => index + 1)
   }
@@ -24,7 +26,7 @@ function getVisiblePages(currentPage: number, totalPages: number): PaginationIte
   return [1, 'ellipsis', currentPage - 1, currentPage, currentPage + 1, 'ellipsis', totalPages]
 }
 
-export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
+export const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
   if (totalPages <= 1) {
     return null
   }
@@ -41,9 +43,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         aria-disabled={currentPage === 1}
         aria-label="Предыдущая страница"
       >
-        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-          <path d="m14 6-6 6 6 6" />
-        </svg>
+        <ChevronLeftIcon />
       </button>
 
       <div className={styles.pages}>
@@ -74,9 +74,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         aria-disabled={currentPage === totalPages}
         aria-label="Следующая страница"
       >
-        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-          <path d="m10 6 6 6-6 6" />
-        </svg>
+        <ChevronRightIcon />
       </button>
     </nav>
   )

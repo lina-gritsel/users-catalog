@@ -6,7 +6,7 @@ type SearchInputProps = {
   onChange: (value: string) => void
 }
 
-export function SearchInput({ value, isBusy, onChange }: SearchInputProps) {
+export const SearchInput = ({ value, isBusy, onChange }: SearchInputProps) => {
   return (
     <label className={styles.searchField}>
       <span className={styles.label}>Поиск по имени</span>

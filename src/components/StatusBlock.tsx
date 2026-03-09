@@ -7,7 +7,7 @@ type StatusBlockProps = {
   onAction?: () => void
 }
 
-export function StatusBlock({ title, description, actionLabel, onAction }: StatusBlockProps) {
+export const StatusBlock = ({ title, description, actionLabel, onAction }: StatusBlockProps) => {
   return (
     <section className={styles.statusBlock}>
       <p className={styles.title}>{title}</p>

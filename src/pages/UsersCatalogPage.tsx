@@ -1,6 +1,8 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { getUsers, searchUsers } from '../api/users'
+import { GridIcon } from '../assets/icons/GridIcon'
+import { ListIcon } from '../assets/icons/ListIcon'
 import { Pagination } from '../components/Pagination'
 import { SearchInput } from '../components/SearchInput'
 import { StatusBlock } from '../components/StatusBlock'
@@ -20,7 +22,7 @@ const initialState: UsersResponse = {
   limit: PAGE_SIZE,
 }
 
-export function UsersCatalogPage() {
+export const UsersCatalogPage = () => {
   const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
@@ -49,12 +51,12 @@ export function UsersCatalogPage() {
     }
   }, [data.limit, data.total, page])
 
-  function handleSearchChange(nextValue: string) {
+  const handleSearchChange = (nextValue: string) => {
     setQuery(nextValue)
     setPage(1)
   }
 
-  function handleRetry() {
+  const handleRetry = () => {
     void refetch()
   }
 
@@ -96,12 +98,7 @@ export function UsersCatalogPage() {
               onClick={() => setViewMode('grid')}
               aria-label="Показать сеткой"
             >
-              <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-                <rect x="4" y="4" width="6" height="6" rx="1.5" />
-                <rect x="14" y="4" width="6" height="6" rx="1.5" />
-                <rect x="4" y="14" width="6" height="6" rx="1.5" />
-                <rect x="14" y="14" width="6" height="6" rx="1.5" />
-              </svg>
+              <GridIcon />
             </button>
             <button
               type="button"
@@ -109,12 +106,7 @@ export function UsersCatalogPage() {
               onClick={() => setViewMode('list')}
               aria-label="Показать списком"
             >
-              <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-                <path d="M9 6h11M9 12h11M9 18h11" />
-                <circle cx="5" cy="6" r="1.25" fill="currentColor" stroke="none" />
-                <circle cx="5" cy="12" r="1.25" fill="currentColor" stroke="none" />
-                <circle cx="5" cy="18" r="1.25" fill="currentColor" stroke="none" />
-              </svg>
+              <ListIcon />
             </button>
           </div>
         </div>

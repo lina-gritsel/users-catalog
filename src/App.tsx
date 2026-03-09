@@ -1,7 +1,5 @@
 import { UsersCatalogPage } from './pages/UsersCatalogPage'
 
-function App() {
-  return <UsersCatalogPage />
-}
+const App = () => <UsersCatalogPage />
 
 export default App

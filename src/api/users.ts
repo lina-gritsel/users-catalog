@@ -6,11 +6,11 @@ type RequestOptions = {
   signal?: AbortSignal
 }
 
-async function requestUsers(
+const requestUsers = async (
   path: string,
   params: Record<string, string | number>,
   options: RequestOptions = {},
-) {
+) => {
   const searchParams = new URLSearchParams(
     Object.entries(params).reduce<Record<string, string>>((accumulator, [key, value]) => {
       accumulator[key] = String(value)
@@ -29,10 +29,10 @@ async function requestUsers(
   return (await response.json()) as UsersResponse
 }
 
-export function getUsers({ limit, skip }: FetchUsersParams, options?: RequestOptions) {
-  return requestUsers('', { limit, skip }, options)
-}
+export const getUsers = ({ limit, skip }: FetchUsersParams, options?: RequestOptions) =>
+  requestUsers('', { limit, skip }, options)
 
-export function searchUsers({ query, limit, skip }: SearchUsersParams, options?: RequestOptions) {
-  return requestUsers('/search', { q: query, limit, skip }, options)
-}
+export const searchUsers = (
+  { query, limit, skip }: SearchUsersParams,
+  options?: RequestOptions,
+) => requestUsers('/search', { q: query, limit, skip }, options)
