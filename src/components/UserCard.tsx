@@ -14,9 +14,12 @@ type UserCardProps = {
 
 export const UserCard = ({ user, viewMode, onClick }: UserCardProps) => {
   const fullName = `${user.firstName} ${user.lastName}`
-  const location = [user.address.city, user.address.state].filter(Boolean).join(', ')
+  const location = [user.address.city, user.address.state]
+    .filter(Boolean)
+    .join(', ')
   const position = user.company.title || user.role
-  const cardClassName = viewMode === 'list' ? `${styles.card} ${styles.cardList}` : styles.card
+  const cardClassName =
+    viewMode === 'list' ? `${styles.card} ${styles.cardList}` : styles.card
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -35,7 +38,12 @@ export const UserCard = ({ user, viewMode, onClick }: UserCardProps) => {
         onKeyDown={handleKeyDown}
       >
         <div className={styles.listIdentity}>
-          <img className={styles.avatar} src={user.image} alt={fullName} loading="lazy" />
+          <img
+            className={styles.avatar}
+            src={user.image}
+            alt={fullName}
+            loading="lazy"
+          />
           <div className={styles.identity}>
             <h3 className={styles.listName}>{fullName}</h3>
             <p className={styles.listMeta}>
@@ -67,7 +75,12 @@ export const UserCard = ({ user, viewMode, onClick }: UserCardProps) => {
       onKeyDown={handleKeyDown}
     >
       <div className={styles.header}>
-        <img className={styles.avatar} src={user.image} alt={fullName} loading="lazy" />
+        <img
+          className={styles.avatar}
+          src={user.image}
+          alt={fullName}
+          loading="lazy"
+        />
         <div className={styles.identity}>
           <h3 className={styles.name}>{fullName}</h3>
           <p className={styles.role}>{position}</p>

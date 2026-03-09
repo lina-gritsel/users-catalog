@@ -1,4 +1,8 @@
-import type { FetchUsersParams, SearchUsersParams, UsersResponse } from '../types/users'
+import type {
+  FetchUsersParams,
+  SearchUsersParams,
+  UsersResponse,
+} from '../types/users'
 
 const BASE_URL = 'https://dummyjson.com/users'
 
@@ -12,15 +16,21 @@ const requestUsers = async (
   options: RequestOptions = {},
 ) => {
   const searchParams = new URLSearchParams(
-    Object.entries(params).reduce<Record<string, string>>((accumulator, [key, value]) => {
-      accumulator[key] = String(value)
-      return accumulator
-    }, {}),
+    Object.entries(params).reduce<Record<string, string>>(
+      (accumulator, [key, value]) => {
+        accumulator[key] = String(value)
+        return accumulator
+      },
+      {},
+    ),
   )
 
-  const response = await fetch(`${BASE_URL}${path}?${searchParams.toString()}`, {
-    signal: options.signal,
-  })
+  const response = await fetch(
+    `${BASE_URL}${path}?${searchParams.toString()}`,
+    {
+      signal: options.signal,
+    },
+  )
 
   if (!response.ok) {
     throw new Error('Не удалось загрузить пользователей. Попробуйте еще раз.')
@@ -29,8 +39,10 @@ const requestUsers = async (
   return (await response.json()) as UsersResponse
 }
 
-export const getUsers = ({ limit, skip }: FetchUsersParams, options?: RequestOptions) =>
-  requestUsers('', { limit, skip }, options)
+export const getUsers = (
+  { limit, skip }: FetchUsersParams,
+  options?: RequestOptions,
+) => requestUsers('', { limit, skip }, options)
 
 export const searchUsers = (
   { query, limit, skip }: SearchUsersParams,

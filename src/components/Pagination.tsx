@@ -10,7 +10,10 @@ type PaginationProps = {
 
 type PaginationItem = number | 'ellipsis'
 
-const getVisiblePages = (currentPage: number, totalPages: number): PaginationItem[] => {
+const getVisiblePages = (
+  currentPage: number,
+  totalPages: number,
+): PaginationItem[] => {
   if (totalPages <= 5) {
     return Array.from({ length: totalPages }, (_, index) => index + 1)
   }
@@ -23,10 +26,22 @@ const getVisiblePages = (currentPage: number, totalPages: number): PaginationIte
     return [1, 'ellipsis', totalPages - 2, totalPages - 1, totalPages]
   }
 
-  return [1, 'ellipsis', currentPage - 1, currentPage, currentPage + 1, 'ellipsis', totalPages]
+  return [
+    1,
+    'ellipsis',
+    currentPage - 1,
+    currentPage,
+    currentPage + 1,
+    'ellipsis',
+    totalPages,
+  ]
 }
 
-export const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
+export const Pagination = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: PaginationProps) => {
   if (totalPages <= 1) {
     return null
   }
@@ -49,13 +64,21 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
       <div className={styles.pages}>
         {visiblePages.map((page, index) =>
           page === 'ellipsis' ? (
-            <span key={`ellipsis-${index}`} className={styles.ellipsis} aria-hidden="true">
+            <span
+              key={`ellipsis-${index}`}
+              className={styles.ellipsis}
+              aria-hidden="true"
+            >
               ...
             </span>
           ) : (
             <button
               key={page}
-              className={page === currentPage ? styles.pageButtonActive : styles.pageButton}
+              className={
+                page === currentPage
+                  ? styles.pageButtonActive
+                  : styles.pageButton
+              }
               type="button"
               onClick={() => onPageChange(page)}
               aria-current={page === currentPage ? 'page' : undefined}

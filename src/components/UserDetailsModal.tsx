@@ -39,7 +39,9 @@ const DetailRow = ({ label, value, icon }: DetailRowProps) => {
 export const UserDetailsModal = ({ user, onClose }: UserDetailsModalProps) => {
   const fullName = `${user.firstName} ${user.lastName}`
   const position = user.company.title || user.role
-  const location = [user.address.city, user.address.state].filter(Boolean).join(', ')
+  const location = [user.address.city, user.address.state]
+    .filter(Boolean)
+    .join(', ')
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -66,7 +68,12 @@ export const UserDetailsModal = ({ user, onClose }: UserDetailsModalProps) => {
         aria-labelledby="user-details-title"
         onClick={(event) => event.stopPropagation()}
       >
-        <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Закрыть">
+        <button
+          type="button"
+          className={styles.closeButton}
+          onClick={onClose}
+          aria-label="Закрыть"
+        >
           <CloseIcon />
         </button>
 
@@ -76,9 +83,7 @@ export const UserDetailsModal = ({ user, onClose }: UserDetailsModalProps) => {
 
         <div className={styles.header}>
           <img className={styles.avatar} src={user.image} alt={fullName} />
-          <p className={styles.name}>
-            {fullName}
-          </p>
+          <p className={styles.name}>{fullName}</p>
           <p className={styles.role}>{position}</p>
           <p className={styles.company}>{user.company.name}</p>
         </div>
@@ -86,11 +91,7 @@ export const UserDetailsModal = ({ user, onClose }: UserDetailsModalProps) => {
         <section className={styles.section}>
           <h3>Контакты</h3>
           <dl className={styles.details}>
-            <DetailRow
-              label="Email"
-              value={user.email}
-              icon={<MailIcon />}
-            />
+            <DetailRow label="Email" value={user.email} icon={<MailIcon />} />
             <DetailRow
               label="Телефон"
               value={user.phone}

@@ -15,7 +15,12 @@ export const UsersGrid = ({ users, viewMode, onUserClick }: UsersGridProps) => {
       aria-label="Список пользователей"
     >
       {users.map((user) => (
-        <UserCard key={user.id} user={user} viewMode={viewMode} onClick={onUserClick} />
+        <UserCard
+          key={user.id}
+          user={user}
+          viewMode={viewMode}
+          onClick={onUserClick}
+        />
       ))}
     </section>
   )

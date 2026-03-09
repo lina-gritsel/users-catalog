@@ -32,11 +32,20 @@ export const UsersCatalogPage = () => {
   const debouncedQuery = useDebouncedValue(trimmedQuery, SEARCH_DEBOUNCE_MS)
   const skip = (page - 1) * PAGE_SIZE
 
-  const { data = initialState, isLoading, isFetching, error, refetch } = useQuery({
+  const {
+    data = initialState,
+    isLoading,
+    isFetching,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: ['users', debouncedQuery, page, PAGE_SIZE],
     queryFn: ({ signal }) =>
       debouncedQuery
-        ? searchUsers({ query: debouncedQuery, limit: PAGE_SIZE, skip }, { signal })
+        ? searchUsers(
+            { query: debouncedQuery, limit: PAGE_SIZE, skip },
+            { signal },
+          )
         : getUsers({ limit: PAGE_SIZE, skip }, { signal }),
     placeholderData: keepPreviousData,
   })
@@ -67,13 +76,18 @@ export const UsersCatalogPage = () => {
           <p className={styles.kicker}>Users Catalog</p>
           <h1>Каталог пользователей</h1>
           <p className={styles.lead}>
-            Данные загружаются из DummyJSON. Можно искать по имени, листать страницы и быстро
-            просматривать ключевую информацию по каждому пользователю.
+            Данные загружаются из DummyJSON. Можно искать по имени, листать
+            страницы и быстро просматривать ключевую информацию по каждому
+            пользователю.
           </p>
         </div>
 
         <div className={styles.panel}>
-          <SearchInput value={query} isBusy={isLoading || isFetching} onChange={handleSearchChange} />
+          <SearchInput
+            value={query}
+            isBusy={isLoading || isFetching}
+            onChange={handleSearchChange}
+          />
           <div className={styles.summary}>
             <div>
               <span>Найдено</span>
@@ -94,7 +108,11 @@ export const UsersCatalogPage = () => {
           <div className={styles.viewSwitch} aria-label="Режим отображения">
             <button
               type="button"
-              className={viewMode === 'grid' ? styles.viewButtonActive : styles.viewButton}
+              className={
+                viewMode === 'grid'
+                  ? styles.viewButtonActive
+                  : styles.viewButton
+              }
               onClick={() => setViewMode('grid')}
               aria-label="Показать сеткой"
             >
@@ -102,7 +120,11 @@ export const UsersCatalogPage = () => {
             </button>
             <button
               type="button"
-              className={viewMode === 'list' ? styles.viewButtonActive : styles.viewButton}
+              className={
+                viewMode === 'list'
+                  ? styles.viewButtonActive
+                  : styles.viewButton
+              }
               onClick={() => setViewMode('list')}
               aria-label="Показать списком"
             >
@@ -114,7 +136,9 @@ export const UsersCatalogPage = () => {
         {error ? (
           <StatusBlock
             title="Не удалось загрузить каталог"
-            description={error instanceof Error ? error.message : 'Что-то пошло не так.'}
+            description={
+              error instanceof Error ? error.message : 'Что-то пошло не так.'
+            }
             actionLabel="Повторить"
             onAction={handleRetry}
           />
@@ -147,15 +171,25 @@ export const UsersCatalogPage = () => {
             />
             <div className={styles.footer}>
               <p className={styles.range}>
-                Показаны {data.skip + 1}-{Math.min(data.skip + data.users.length, data.total)} из{' '}
+                Показаны {data.skip + 1}-
+                {Math.min(data.skip + data.users.length, data.total)} из{' '}
                 {data.total}
               </p>
-              <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+              />
             </div>
           </>
         ) : null}
       </section>
-      {selectedUser ? <UserDetailsModal user={selectedUser} onClose={() => setSelectedUser(null)} /> : null}
+      {selectedUser ? (
+        <UserDetailsModal
+          user={selectedUser}
+          onClose={() => setSelectedUser(null)}
+        />
+      ) : null}
     </main>
   )
 }
