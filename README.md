@@ -1,69 +1,65 @@
-# React + TypeScript + Vite
+# Users Catalog
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Одностраничный каталог пользователей на `React + TypeScript`, который загружает данные из публичного API DummyJSON и поддерживает:
 
-Currently, two official plugins are available:
+- просмотр списка пользователей
+- поиск по имени
+- серверную пагинацию
+- состояния загрузки, пустого результата и ошибки
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Репозиторий: [github.com/lina-gritsel/users-catalog](https://github.com/lina-gritsel/users-catalog)
 
-## Expanding the ESLint configuration
+## Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React 19
+- TypeScript
+- Vite
+- CSS Modules
+- DummyJSON Users API
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## API
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Используется публичный API:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- список пользователей: [https://dummyjson.com/users](https://dummyjson.com/users)
+- документация: [https://dummyjson.com/docs/users](https://dummyjson.com/docs/users)
+
+Приложение использует:
+
+- `GET /users?limit=12&skip=0`
+- `GET /users/search?q=Emily&limit=12&skip=0`
+
+## Requirements
+
+- Node.js 22+
+- npm 11+
+
+## Run locally
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+После запуска Vite покажет локальный адрес, обычно `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Production build
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
+npm run preview
 ```
+
+## What is implemented
+
+- карточки пользователей с именем, email, телефоном, возрастом, ролью, компанией и локацией
+- адаптивная сетка карточек
+- debounce-поиск по имени через `/users/search`
+- пагинация на основе `total`, `skip`, `limit`
+- retry для сетевой ошибки
+
+## Git notes
+
+По условию задачи после инициализации проекта был создан отдельный коммит:
+
+- `Init commit`
