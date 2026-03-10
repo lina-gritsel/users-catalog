@@ -1,14 +1,21 @@
 import type { ReactNode } from 'react'
-import { useEffect } from 'react'
-import { BriefcaseIcon } from '../assets/icons/BriefcaseIcon'
-import { CalendarIcon } from '../assets/icons/CalendarIcon'
-import { CloseIcon } from '../assets/icons/CloseIcon'
-import { CompanyIcon } from '../assets/icons/CompanyIcon'
-import { HashIcon } from '../assets/icons/HashIcon'
-import { LocationIcon } from '../assets/icons/LocationIcon'
-import { MailIcon } from '../assets/icons/MailIcon'
-import { PhoneIcon } from '../assets/icons/PhoneIcon'
-import type { User } from '../types/users'
+import { BriefcaseIcon } from '../../../shared/assets/icons/BriefcaseIcon'
+import { CalendarIcon } from '../../../shared/assets/icons/CalendarIcon'
+import { CloseIcon } from '../../../shared/assets/icons/CloseIcon'
+import { CompanyIcon } from '../../../shared/assets/icons/CompanyIcon'
+import { HashIcon } from '../../../shared/assets/icons/HashIcon'
+import { LocationIcon } from '../../../shared/assets/icons/LocationIcon'
+import { MailIcon } from '../../../shared/assets/icons/MailIcon'
+import { PhoneIcon } from '../../../shared/assets/icons/PhoneIcon'
+import {
+  getUserAgeLabel,
+  getUserDisplayId,
+  getUserFullName,
+  getUserLocation,
+  getUserPosition,
+} from '../lib/userFormatters'
+import type { User } from '../model/types'
+import { useModalBehavior } from '../../../shared/hooks/useModalBehavior'
 import styles from './UserDetailsModal.module.css'
 
 type UserDetailsModalProps = {
@@ -37,27 +44,13 @@ const DetailRow = ({ label, value, icon }: DetailRowProps) => {
 }
 
 export const UserDetailsModal = ({ user, onClose }: UserDetailsModalProps) => {
-  const fullName = `${user.firstName} ${user.lastName}`
-  const position = user.company.title || user.role
-  const location = [user.address.city, user.address.state]
-    .filter(Boolean)
-    .join(', ')
+  const fullName = getUserFullName(user)
+  const position = getUserPosition(user)
+  const location = getUserLocation(user)
+  const ageLabel = getUserAgeLabel(user)
+  const displayId = getUserDisplayId(user)
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose()
-      }
-    }
-
-    document.body.style.overflow = 'hidden'
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      document.body.style.overflow = ''
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [onClose])
+  useModalBehavior({ isOpen: true, onClose })
 
   return (
     <div className={styles.overlay} role="presentation" onClick={onClose}>
@@ -105,7 +98,7 @@ export const UserDetailsModal = ({ user, onClose }: UserDetailsModalProps) => {
           <dl className={styles.details}>
             <DetailRow
               label="Возраст"
-              value={`${user.age} лет`}
+              value={ageLabel}
               icon={<CalendarIcon />}
             />
             <DetailRow
@@ -125,7 +118,7 @@ export const UserDetailsModal = ({ user, onClose }: UserDetailsModalProps) => {
             />
             <DetailRow
               label="ID"
-              value={`#${String(user.id).padStart(4, '0')}`}
+              value={displayId}
               icon={<HashIcon />}
             />
           </dl>

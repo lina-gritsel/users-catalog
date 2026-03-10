@@ -1,9 +1,15 @@
 import type { KeyboardEvent } from 'react'
-import { CalendarIcon } from '../assets/icons/CalendarIcon'
-import { CompanyIcon } from '../assets/icons/CompanyIcon'
-import { LocationIcon } from '../assets/icons/LocationIcon'
-import { PhoneIcon } from '../assets/icons/PhoneIcon'
-import type { User } from '../types/users'
+import { CalendarIcon } from '../../../shared/assets/icons/CalendarIcon'
+import { CompanyIcon } from '../../../shared/assets/icons/CompanyIcon'
+import { LocationIcon } from '../../../shared/assets/icons/LocationIcon'
+import { PhoneIcon } from '../../../shared/assets/icons/PhoneIcon'
+import {
+  getUserAgeLabel,
+  getUserFullName,
+  getUserLocation,
+  getUserPosition,
+} from '../lib/userFormatters'
+import type { User } from '../model/types'
 import styles from './UserCard.module.css'
 
 type UserCardProps = {
@@ -13,11 +19,10 @@ type UserCardProps = {
 }
 
 export const UserCard = ({ user, viewMode, onClick }: UserCardProps) => {
-  const fullName = `${user.firstName} ${user.lastName}`
-  const location = [user.address.city, user.address.state]
-    .filter(Boolean)
-    .join(', ')
-  const position = user.company.title || user.role
+  const fullName = getUserFullName(user)
+  const location = getUserLocation(user)
+  const position = getUserPosition(user)
+  const ageLabel = getUserAgeLabel(user)
   const cardClassName =
     viewMode === 'list' ? `${styles.card} ${styles.cardList}` : styles.card
 
@@ -60,7 +65,7 @@ export const UserCard = ({ user, viewMode, onClick }: UserCardProps) => {
             </span>
             <span>{location}</span>
           </span>
-          <span className={styles.ageBadge}>{user.age} лет</span>
+          <span className={styles.ageBadge}>{ageLabel}</span>
         </div>
       </article>
     )
@@ -122,7 +127,7 @@ export const UserCard = ({ user, viewMode, onClick }: UserCardProps) => {
             <span className={styles.icon} aria-hidden="true">
               <CalendarIcon />
             </span>
-            <span>{user.age} лет</span>
+            <span>{ageLabel}</span>
           </dd>
         </div>
       </dl>

@@ -2,18 +2,18 @@ import type {
   FetchUsersParams,
   SearchUsersParams,
   UsersResponse,
-} from '../types/users'
+} from '../../../entities/user/model/types'
+import type {
+  UsersCatalogListParams,
+  UsersRequestOptions,
+} from './types'
 
 const BASE_URL = 'https://dummyjson.com/users'
-
-type RequestOptions = {
-  signal?: AbortSignal
-}
 
 const requestUsers = async (
   path: string,
   params: Record<string, string | number>,
-  options: RequestOptions = {},
+  options: UsersRequestOptions = {},
 ) => {
   const searchParams = new URLSearchParams(
     Object.entries(params).reduce<Record<string, string>>(
@@ -41,10 +41,21 @@ const requestUsers = async (
 
 export const getUsers = (
   { limit, skip }: FetchUsersParams,
-  options?: RequestOptions,
+  options?: UsersRequestOptions,
 ) => requestUsers('', { limit, skip }, options)
 
 export const searchUsers = (
   { query, limit, skip }: SearchUsersParams,
-  options?: RequestOptions,
+  options?: UsersRequestOptions,
 ) => requestUsers('/search', { q: query, limit, skip }, options)
+
+export const getUsersCatalogList = (
+  { page, pageSize, query }: UsersCatalogListParams,
+  options?: UsersRequestOptions,
+) => {
+  const skip = (page - 1) * pageSize
+
+  return query
+    ? searchUsers({ query, limit: pageSize, skip }, options)
+    : getUsers({ limit: pageSize, skip }, options)
+}

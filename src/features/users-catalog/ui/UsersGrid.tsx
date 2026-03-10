@@ -1,10 +1,11 @@
-import type { User } from '../types/users'
-import { UserCard } from './UserCard'
+import type { User } from '../../../entities/user/model/types'
+import { UserCard } from '../../../entities/user/ui/UserCard'
+import type { UsersViewMode } from '../model/types'
 import styles from './UsersGrid.module.css'
 
 type UsersGridProps = {
   users: User[]
-  viewMode: 'grid' | 'list'
+  viewMode: UsersViewMode
   onUserClick: (user: User) => void
 }
 

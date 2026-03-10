@@ -25,6 +25,12 @@ npm run dev
 npm run build
 ```
 
+Проверка линтера:
+
+```bash
+npm run lint
+```
+
 Предпросмотр production-сборки:
 
 ```bash
