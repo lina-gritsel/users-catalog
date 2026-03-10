@@ -1,4 +1,4 @@
-import type { UsersResponse } from '../../../entities/user/model/types'
+import type { UsersResponse } from '@entities/user/model/types'
 
 export const getUsersCatalogTotalPages = (
   total: number,

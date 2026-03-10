@@ -1,0 +1,49 @@
+.switch {
+  display: inline-flex;
+  gap: 0.15rem;
+  width: 62px;
+  height: 34px;
+  padding: 2px;
+  border-radius: 999px;
+  border: 1px solid rgba(203, 213, 225, 0.95);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.button,
+.buttonActive {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 999px;
+  color: #64748b;
+  background: transparent;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.button svg,
+.buttonActive svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.buttonActive {
+  color: #fff;
+  background: #1ea0e6;
+  box-shadow: 0 8px 20px rgba(30, 160, 230, 0.32);
+}
+
+.button:hover {
+  background: rgba(241, 245, 249, 0.95);
+}

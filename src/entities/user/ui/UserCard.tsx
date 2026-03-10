@@ -1,15 +1,17 @@
 import type { KeyboardEvent } from 'react'
-import { CalendarIcon } from '../../../shared/assets/icons/CalendarIcon'
-import { CompanyIcon } from '../../../shared/assets/icons/CompanyIcon'
-import { LocationIcon } from '../../../shared/assets/icons/LocationIcon'
-import { PhoneIcon } from '../../../shared/assets/icons/PhoneIcon'
+import {
+  CalendarIcon,
+  CompanyIcon,
+  LocationIcon,
+  PhoneIcon,
+} from '@shared/assets/icons'
 import {
   getUserAgeLabel,
   getUserFullName,
   getUserLocation,
   getUserPosition,
-} from '../lib/userFormatters'
-import type { User } from '../model/types'
+} from '@entities/user'
+import type { User } from '@entities/user'
 import styles from './UserCard.module.css'
 
 type UserCardProps = {

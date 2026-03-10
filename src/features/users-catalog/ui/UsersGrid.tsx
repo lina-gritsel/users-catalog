@@ -1,6 +1,6 @@
-import type { User } from '../../../entities/user/model/types'
-import { UserCard } from '../../../entities/user/ui/UserCard'
-import type { UsersViewMode } from '../model/types'
+import type { User } from '@entities/user'
+import { UserCard } from '@entities/user'
+import type { UsersViewMode } from '@features/users-catalog/model'
 import styles from './UsersGrid.module.css'
 
 type UsersGridProps = {

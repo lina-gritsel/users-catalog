@@ -1,21 +1,23 @@
 import type { ReactNode } from 'react'
-import { BriefcaseIcon } from '../../../shared/assets/icons/BriefcaseIcon'
-import { CalendarIcon } from '../../../shared/assets/icons/CalendarIcon'
-import { CloseIcon } from '../../../shared/assets/icons/CloseIcon'
-import { CompanyIcon } from '../../../shared/assets/icons/CompanyIcon'
-import { HashIcon } from '../../../shared/assets/icons/HashIcon'
-import { LocationIcon } from '../../../shared/assets/icons/LocationIcon'
-import { MailIcon } from '../../../shared/assets/icons/MailIcon'
-import { PhoneIcon } from '../../../shared/assets/icons/PhoneIcon'
+import {
+  BriefcaseIcon,
+  CalendarIcon,
+  CloseIcon,
+  CompanyIcon,
+  HashIcon,
+  LocationIcon,
+  MailIcon,
+  PhoneIcon,
+} from '@shared/assets/icons'
 import {
   getUserAgeLabel,
   getUserDisplayId,
   getUserFullName,
   getUserLocation,
   getUserPosition,
-} from '../lib/userFormatters'
-import type { User } from '../model/types'
-import { useModalBehavior } from '../../../shared/hooks/useModalBehavior'
+} from '@entities/user'
+import type { User } from '@entities/user'
+import { useModalBehavior } from '@shared/hooks'
 import styles from './UserDetailsModal.module.css'
 
 type UserDetailsModalProps = {

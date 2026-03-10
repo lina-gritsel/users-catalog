@@ -1,4 +1,4 @@
-import type { UsersResponse } from '../../../entities/user/model/types'
+import type { UsersResponse } from '@entities/user/model/types'
 
 export const USERS_CATALOG_PAGE_SIZE = 12
 export const USERS_CATALOG_SEARCH_DEBOUNCE_MS = 350

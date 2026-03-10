@@ -1,5 +1,4 @@
-import { ChevronLeftIcon } from '../../assets/icons/ChevronLeftIcon'
-import { ChevronRightIcon } from '../../assets/icons/ChevronRightIcon'
+import { ChevronLeftIcon, ChevronRightIcon } from '@shared/assets/icons'
 import styles from './Pagination.module.css'
 
 type PaginationProps = {

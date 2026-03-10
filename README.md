@@ -1,5 +1,18 @@
 # Users Catalog
 
+## Архитектура
+
+- `src/app` - app-level providers и bootstrap
+- `src/pages` - page composition без data orchestration
+- `src/features` - feature hooks, query factories и feature UI
+- `src/entities` - доменные типы, форматтеры и UI сущностей
+- `src/shared` - общие hooks, UI и assets
+
+Алиасы импортов:
+
+- `@/` - весь `src`
+- `@app/`, `@pages/`, `@features/`, `@entities/`, `@shared/` - по слоям
+
 ## Запуск
 
 Требования:

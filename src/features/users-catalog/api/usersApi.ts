@@ -2,7 +2,7 @@ import type {
   FetchUsersParams,
   SearchUsersParams,
   UsersResponse,
-} from '../../../entities/user/model/types'
+} from '@entities/user/model/types'
 import type {
   UsersCatalogListParams,
   UsersRequestOptions,

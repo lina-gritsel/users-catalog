@@ -1,40 +1,42 @@
-import { UserDetailsModal } from '../../../entities/user/ui/UserDetailsModal'
-import { SearchInput } from '../../../features/users-catalog/ui/SearchInput'
-import { UsersGrid } from '../../../features/users-catalog/ui/UsersGrid'
-import { UsersSummary } from '../../../features/users-catalog/ui/UsersSummary'
-import { ViewModeSwitch } from '../../../features/users-catalog/ui/ViewModeSwitch'
-import { useUsersCatalog } from '../../../features/users-catalog/model/useUsersCatalog'
-import { Pagination } from '../../../shared/ui/pagination/Pagination'
-import { StatusBlock } from '../../../shared/ui/status-block/StatusBlock'
+import { UserDetailsModal } from '@entities/user'
+import {
+  SearchInput,
+  useUsersCatalog,
+  UsersGrid,
+  UsersSummary,
+  ViewModeSwitch,
+} from '@features/users-catalog'
+import { Pagination, StatusBlock } from '@shared/ui'
 import styles from './UsersCatalogPage.module.css'
 
 export const UsersCatalogPage = () => {
   const {
-    currentPage,
-    error,
-    errorMessage,
-    handleRetry,
-    handleSearchChange,
-    handleUserDetailsClose,
-    handleUserSelect,
-    handleViewModeChange,
-    hasUsers,
-    isBusy,
-    isEmpty,
-    isInitialLoading,
-    normalizedQuery,
-    query,
-    range,
-    selectedUser,
-    handlePageChange,
-    total,
-    totalPages,
-    users,
-    viewMode,
+    actions: {
+      changePage,
+      changeSearch,
+      changeViewMode,
+      closeUserDetails,
+      retry,
+      selectUser,
+    },
+    state: {
+      currentPage,
+      error,
+      errorMessage,
+      hasUsers,
+      isBusy,
+      isEmpty,
+      isInitialLoading,
+      normalizedQuery,
+      query,
+      range,
+      selectedUser,
+      total,
+      totalPages,
+      users,
+      viewMode,
+    },
   } = useUsersCatalog()
-
-  const getViewButtonClassName = (mode: 'grid' | 'list') =>
-    viewMode === mode ? styles.viewButtonActive : styles.viewButton
 
   return (
     <main className={styles.page}>
@@ -53,7 +55,7 @@ export const UsersCatalogPage = () => {
           <SearchInput
             value={query}
             isBusy={isBusy}
-            onChange={handleSearchChange}
+            onChange={changeSearch}
           />
           <div className={styles.summary}>
             <UsersSummary
@@ -67,13 +69,7 @@ export const UsersCatalogPage = () => {
 
       <section className={styles.content}>
         <div className={styles.toolbar}>
-          <div className={styles.viewSwitch}>
-            <ViewModeSwitch
-              activeViewMode={viewMode}
-              getButtonClassName={getViewButtonClassName}
-              onChange={handleViewModeChange}
-            />
-          </div>
+          <ViewModeSwitch value={viewMode} onChange={changeViewMode} />
         </div>
 
         {error ? (
@@ -81,7 +77,7 @@ export const UsersCatalogPage = () => {
             title="Не удалось загрузить каталог"
             description={errorMessage}
             actionLabel="Повторить"
-            onAction={handleRetry}
+            onAction={retry}
           />
         ) : null}
 
@@ -108,7 +104,7 @@ export const UsersCatalogPage = () => {
             <UsersGrid
               users={users}
               viewMode={viewMode}
-              onUserClick={handleUserSelect}
+              onUserClick={selectUser}
             />
             <div className={styles.footer}>
               <p className={styles.range}>
@@ -117,14 +113,14 @@ export const UsersCatalogPage = () => {
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
-                onPageChange={handlePageChange}
+                onPageChange={changePage}
               />
             </div>
           </>
         ) : null}
       </section>
       {selectedUser ? (
-        <UserDetailsModal user={selectedUser} onClose={handleUserDetailsClose} />
+        <UserDetailsModal user={selectedUser} onClose={closeUserDetails} />
       ) : null}
     </main>
   )

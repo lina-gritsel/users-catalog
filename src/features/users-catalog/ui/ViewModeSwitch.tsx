@@ -1,35 +1,35 @@
-import { GridIcon } from '../../../shared/assets/icons/GridIcon'
-import { ListIcon } from '../../../shared/assets/icons/ListIcon'
-import type { UsersViewMode } from '../model/types'
+import { GridIcon, ListIcon } from '@shared/assets/icons'
+import type { UsersViewMode } from '@features/users-catalog/model'
+import styles from '@features/users-catalog/ui/ViewModeSwitch.module.css'
 
 type ViewModeSwitchProps = {
-  activeViewMode: UsersViewMode
-  getButtonClassName: (viewMode: UsersViewMode) => string
+  value: UsersViewMode
   onChange: (viewMode: UsersViewMode) => void
 }
 
-export const ViewModeSwitch = ({
-  activeViewMode,
-  getButtonClassName,
-  onChange,
-}: ViewModeSwitchProps) => {
+const getButtonClassName = (
+  currentValue: UsersViewMode,
+  buttonValue: UsersViewMode,
+) => (currentValue === buttonValue ? styles.buttonActive : styles.button)
+
+export const ViewModeSwitch = ({ value, onChange }: ViewModeSwitchProps) => {
   return (
-    <div role="group" aria-label="Режим отображения">
+    <div className={styles.switch} role="group" aria-label="Режим отображения">
       <button
         type="button"
-        className={getButtonClassName('grid')}
+        className={getButtonClassName(value, 'grid')}
         onClick={() => onChange('grid')}
         aria-label="Показать сеткой"
-        aria-pressed={activeViewMode === 'grid'}
+        aria-pressed={value === 'grid'}
       >
         <GridIcon />
       </button>
       <button
         type="button"
-        className={getButtonClassName('list')}
+        className={getButtonClassName(value, 'list')}
         onClick={() => onChange('list')}
         aria-label="Показать списком"
-        aria-pressed={activeViewMode === 'list'}
+        aria-pressed={value === 'list'}
       >
         <ListIcon />
       </button>

@@ -1,4 +1,4 @@
-import { UsersCatalogPage } from './pages/users-catalog/ui/UsersCatalogPage'
+import { UsersCatalogPage } from '@pages/users-catalog'
 
 const App = () => <UsersCatalogPage />
 
